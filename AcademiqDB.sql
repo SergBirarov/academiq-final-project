@@ -21,7 +21,7 @@ GO
 CREATE TABLE Departments (
 	Department_Code INT PRIMARY KEY,
 	Department_Name NVARCHAR(50),
-	ManagerId INT NULL 	  
+	HOD_Id INT NULL --head of department	  
 )
 GO
 
@@ -78,7 +78,7 @@ CREATE TABLE Students (
 	Picture_URL NVARCHAR(MAX) NULL ,
 	Address NVARCHAR(50) NULL ,
 	City_Code int NULL ,
-	Registration date NULL,
+	Enrollment date NULL,
 	FOREIGN KEY (City_Code) REFERENCES Cities(City_Code),
 	Password NVARCHAR(24)  NULL, --NOT NULL
 
@@ -87,7 +87,7 @@ CREATE TABLE Students (
 CREATE TABLE Assignments (
     AssignmentId INT NOT NULL PRIMARY KEY,
     CourseId INT NOT NULL,
-    IsVisible BIT NOT NULL,
+    IsVisible BIT NOT NULL, --bool var- uploading all assing..change to show what is already uploaded
     Deadline DATETIME NOT NULL,
 	File_URL NVARCHAR(MAX)  NULL,
 	Description NVARCHAR(MAX) NULL, 
@@ -99,15 +99,16 @@ CREATE TABLE Assignment_Of_Student (
     AssignmentId INT NOT NULL,
     CourseId INT NOT NULL,
 	StudentId INT NOT NULL,
-    IsDone BIT NOT NULL,
-    SelfDeadline DATETIME NOT NULL,
+    Submitted BIT NOT NULL,
+    SelfDeadline DATETIME NOT NULL, 
+	Mark INT Null,
 	FOREIGN KEY (AssignmentId) REFERENCES Assignments(AssignmentId),
 	FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
 	FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
 	PRIMARY KEY (AssignmentId,CourseId,StudentId)
 );
 
-
+--test marks
 CREATE TABLE Marks (
     StudentId INT NOT NULL,
     CourseId INT NOT NULL,
@@ -126,7 +127,7 @@ CREATE TABLE Courses_On_Air (
 	End_Date DATE NOT NULL,
 	LecturerId INT NOT NULL,
 	Building_Code INT NULL ,
-	Class_Code INT NOT NULL,
+	Class_Code INT NOT NULL, --where class is held
 	FOREIGN KEY (LecturerId) REFERENCES Lecturers(LecturerId),
 	FOREIGN KEY (Building_Code) REFERENCES Buildings(Building_Code),
 	FOREIGN KEY (Class_Code) REFERENCES Classes(Class_Code)
@@ -137,15 +138,15 @@ GO
 CREATE TABLE Course_Schedule (
     Course_Code INT NOT NULL,
     Week_Day NVARCHAR(1) NOT NULL,
-    Begin_Hour TIME NOT NULL,
-    End_Hour TIME NOT NULL,
+    Start_Time TIME NOT NULL,
+    End_Time TIME NOT NULL,
     Class_Code INT NOT NULL,
     PRIMARY KEY (Course_Code, Week_Day, Begin_Hour, End_Hour),
     FOREIGN KEY (Course_Code) REFERENCES Courses_On_Air(Course_Code),
     FOREIGN KEY (Class_Code) REFERENCES Classes(Class_Code)
 );
 
--- Add a foreign key to connect Students to Courses (for students enrolled in a course)
+
 CREATE TABLE Students_In_Course (
     StudentId INT NOT NULL,
     CourseId INT NOT NULL,
@@ -154,6 +155,8 @@ CREATE TABLE Students_In_Course (
     FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
     FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)
 );
+
+
 
 -- Cities
 INSERT INTO Cities (City_Code, City_Name) VALUES
@@ -169,7 +172,7 @@ INSERT INTO Cities (City_Code, City_Name) VALUES
 (10, '?????');
 
 -- Departments
-INSERT INTO Departments (Department_Code, Department_Name, ManagerId) VALUES
+INSERT INTO Departments (Department_Code, Department_Name, HOD_Id) VALUES --HOD - head of department
 (1, '???? ?????', 1),
 (2, '???????', 2),
 (3, '??????', 3),
