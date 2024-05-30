@@ -156,6 +156,66 @@ CREATE TABLE Students_In_Course (
     FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)
 );
 
+--new tables
+
+Create Table Student_Notebook(
+	StudentId INT NOT NULL,
+	CourseId INT NOT NULL,
+	Serial_Num INT Identity(1,1), --gives a serial number auotomatically and not changing if other file is deleted
+	File_type Varchar(10) NOT NULL,
+	Upload_date DATE NOT NULL, --auotomatic field
+	File_URL Nvarchar(MAX) NOT NULL,
+	Primary Key (StudentId, CourseId, Serial_Num),
+	Foreign Key (StudentId) References Students(StudentId),
+	FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)
+	
+	);
+
+Create Table Lecturer_Msg(
+	MessageId INT Identity(1,1) Primary Key,
+	LecturerId int NOT NULL,
+	StudentId int not null,
+	MessageTitle Nvarchar(20),
+	MessageContent Nvarchar(400) not null,
+	SentDate DateTime Not Null,
+	ReadStatus bit Not Null,
+	);
+
+
+Create Table Roles (
+	Id int Not Null Primary Key, 
+	Name Nvarchar(20) Not null,
+	Role_code smallint Not Null,
+	Password Nvarchar(255) Not null, --keeps encrypted passwords, the encryption will be done in the code
+	Email Nvarchar(50) Not null UNIQUE,
+	Phone Nvarchar(13) UNIQUE,
+	Foreign Key (Role_code) References Role_codes(Role_code)
+	);
+
+Create Table Role_codes(
+	Role_code smallint Not null,
+	Role_desc Nvarchar(25),
+	);
+
+Create Table UI_Essentials(
+	StudentId int not null Primary Key,
+	--TODO - each column will represent a button on home page, the buttons will display in different sizes according to its usage by the specific student
+	--the field will calculate the ratio of size of the buttuns i.e - if in 50 percent of the time a specific button is pressed its size will be XL;
+	--s - 25%
+	--m - and so forth
+	
+	);
+	
+
+
+	
+	
+
+
+
+	
+	
+
 
 
 -- Cities
