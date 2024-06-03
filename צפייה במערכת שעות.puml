@@ -1,0 +1,16 @@
+@startuml "צפייה במערכת שעות"
+Actor User
+participant GUI as "Weekly Schedule"
+database Database_Course_Schedule as "Course_Schedule"
+
+activate User
+User->GUI: Show Weekly Schedule
+activate GUI
+GUI->Database_Course_Schedule: "Query Course_Schedule for student's weekly schedule"
+activate Database_Course_Schedule
+Database_Course_Schedule->GUI: "Returns schedule data"
+deactivate Database_Course_Schedule
+GUI->User: "View schedule"
+deactivate GUI
+deactivate User
+@enduml

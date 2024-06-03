@@ -1,0 +1,16 @@
+@startuml "ניהול חומרי למידה"
+Actor User
+participant GUI as "Any Screen"
+database Study_Meterials as "Study_Meterials"
+
+'activate User
+User->GUI: Clicks "Show Weekly Schedule" button
+activate GUI
+GUI->Database_Course_Schedule: "Query Course_Schedule for student's weekly schedule"
+activate Database_Course_Schedule
+Database_Course_Schedule->GUI: "Returns schedule data"
+deactivate Database_Course_Schedule
+GUI->GUI: "Displays schedule data on screen"
+deactivate GUI
+'deactivate User
+@enduml

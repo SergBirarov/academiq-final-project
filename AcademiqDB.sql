@@ -222,7 +222,7 @@ INSERT INTO Cities (City_Code, City_Name) VALUES
 (9, 'חולון'),
 (10, 'בת ים');
 
--- מחלקות
+-- מגמות
 INSERT INTO Departments (Department_Code, Department_Name, HOD_Id) VALUES
 (1, 'מדעי המחשב', 1),
 (2, 'מתמטיקה', 2),
