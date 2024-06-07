@@ -1,14 +1,10 @@
 import { Router } from 'express';
-import { deleteUser, findAllUsers, loginUser, registerUser, updateUser } from './admin.controller';
+import { deleteFromTable, insertToTable } from './admin.controller';
 
-const userRouter = Router();
+const adminRouter = Router();
 
-userRouter
-  .get('/', findAllUsers)
-  .post('/register', registerUser)
-  .post('/login', loginUser)
-  .put('/update', updateUser)
-  .delete('/delete', deleteUser)
+adminRouter
+  .post('/insert', insertToTable)
+  .delete('/delete', deleteFromTable)
 
-
-export default userRouter; 
+export default adminRouter; 

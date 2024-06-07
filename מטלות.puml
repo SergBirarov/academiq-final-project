@@ -1,0 +1,57 @@
+@startuml "מערכת מטלות"
+Actor User
+participant API as "Assignment API"
+database Database_Assignments as "Assignments Database"
+alt Lecturer
+User->API: "createAssignment"
+activate API
+API->User: "Enter new Assignment details"
+User->API: "Submit new Assignment details"
+API->Database_Assignments: "Insert new assignment"
+activate Database_Assignments
+Database_Assignments->API: "Confirmation of assignment creation"
+deactivate Database_Assignments
+API->User: "Display confirmation message"
+deactivate API
+
+User->API: "editAssignment"
+activate API
+API->Database_Assignments: "Update assignment details"
+activate Database_Assignments
+Database_Assignments->API: "Confirmation of assignment update"
+deactivate Database_Assignments
+API->User: "Display confirmation message"
+deactivate API
+
+User->API: "deleteAssignment"
+activate API
+API->Database_Assignments: "Delete assignment"
+activate Database_Assignments
+Database_Assignments->API: "Confirmation of assignment deletion"
+deactivate Database_Assignments
+API->User: "Display confirmation message"
+deactivate API
+end
+
+alt Student
+User->API: "getAssignment"
+activate API
+API->Database_Assignments: "Query assignment details"
+activate Database_Assignments
+Database_Assignments->API: "Return assignment details"
+deactivate Database_Assignments
+API->User: "Display assignment details"
+deactivate API
+
+User->API: "submittingAssignment"
+activate API
+API->User: "Enter Assignment details"
+User->API: "Submit Assignment details"
+API->Database_Assignments: "Submit assignment solution"
+activate Database_Assignments
+Database_Assignments->API: "Confirmation of submission"
+deactivate Database_Assignments
+API->User: "Display confirmation message"
+deactivate API
+end
+@enduml
