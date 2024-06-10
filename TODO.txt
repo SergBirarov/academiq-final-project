@@ -1,0 +1,4 @@
+chat - mongo RT
+SQL view for each page
+mocup for each page
+qa - STD/STP for 3 main procs (seif 5)
