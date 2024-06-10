@@ -1,7 +1,7 @@
 @startuml "ניהול חומרי למידה"
 Actor User
 participant GUI as "CourseNote"
-database Study_Meterials as "Study_Meterials"
+participant Study_Meterials as "Study_Meterials"
 
 activate User
 User->GUI: "v"

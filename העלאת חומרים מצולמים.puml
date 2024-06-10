@@ -1,0 +1,26 @@
+@startuml "מערכת צפייה בחומרי לימוד מצולמים"
+Actor User
+participant API as "System"
+participant Database_Materials as "Learning Materials Database"
+
+activate User
+User->API: "Browse Materials"
+activate API
+API->Database_Materials: "Retrieve material list"
+activate Database_Materials
+Database_Materials->API: "Return material list"
+deactivate Database_Materials
+API->User: "Display material list"
+deactivate API
+
+User->API: "Select/Search Material"
+activate API
+API->Database_Materials: "Retrieve material details"
+activate Database_Materials
+Database_Materials->API: "Return material details"
+deactivate Database_Materials
+API->User: "Display material"
+deactivate API
+deactivate User
+
+@enduml

@@ -1,57 +1,81 @@
 @startuml "מערכת מטלות"
-Actor User
+Actor Timer
+' Actor User
+Actor Student
+Actor Lecturer
 participant API as "Assignment API"
-database Database_Assignments as "Assignments Database"
+participant Database_Assignments as "Assignments Database"
+
 alt Lecturer
-User->API: "createAssignment"
+Lecturer->API: "createAssignment"
+activate Lecturer
 activate API
-API->User: "Enter new Assignment details"
-User->API: "Submit new Assignment details"
+API->Lecturer: "Enter new Assignment details"
+Lecturer->API: "Submit new Assignment details"
 API->Database_Assignments: "Insert new assignment"
 activate Database_Assignments
 Database_Assignments->API: "Confirmation of assignment creation"
 deactivate Database_Assignments
-API->User: "Display confirmation message"
+API->Lecturer: "Display confirmation message"
 deactivate API
 
-User->API: "editAssignment"
+Lecturer->API: "editAssignment"
 activate API
 API->Database_Assignments: "Update assignment details"
 activate Database_Assignments
 Database_Assignments->API: "Confirmation of assignment update"
 deactivate Database_Assignments
-API->User: "Display confirmation message"
+API->Lecturer: "Display confirmation message"
 deactivate API
 
-User->API: "deleteAssignment"
+Lecturer->API: "deleteAssignment"
 activate API
 API->Database_Assignments: "Delete assignment"
 activate Database_Assignments
 Database_Assignments->API: "Confirmation of assignment deletion"
 deactivate Database_Assignments
-API->User: "Display confirmation message"
+API->Lecturer: "Display confirmation message"
+deactivate Lecturer
 deactivate API
 end
 
 alt Student
-User->API: "getAssignment"
+Student->API: "getAssignment"
+activate Student
 activate API
 API->Database_Assignments: "Query assignment details"
 activate Database_Assignments
 Database_Assignments->API: "Return assignment details"
 deactivate Database_Assignments
-API->User: "Display assignment details"
+API->Student: "Display assignment details"
 deactivate API
 
-User->API: "submittingAssignment"
+
+Student->API: "submittingAssignment"
 activate API
-API->User: "Enter Assignment details"
-User->API: "Submit Assignment details"
+API->Student: "Enter Assignment details"
+Student->API: "Submit Assignment details"
 API->Database_Assignments: "Submit assignment solution"
 activate Database_Assignments
 Database_Assignments->API: "Confirmation of submission"
 deactivate Database_Assignments
-API->User: "Display confirmation message"
+API->Student: "Display confirmation message"
 deactivate API
+
+alt Assignments with deadlines
+Timer->API: "Check deadlines"
+activate API
+activate Timer
+API->Database_Assignments: "Check for upcoming deadlines"
+deactivate Timer
+activate Database_Assignments
+Database_Assignments->API: "Return list of assignments with deadlines"
+deactivate Database_Assignments
+API->Student: "Send deadline reminders"
+deactivate API
+else
+deactivate API
+deactivate Student
+end
 end
 @enduml

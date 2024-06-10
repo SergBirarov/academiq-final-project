@@ -1,0 +1,28 @@
+@startuml "פעילות טיימר עבור חיבור משתמש"
+Actor User
+participant Timer as "Timer"
+participant API as "System"
+
+User->API: "Login"
+activate User
+activate API
+API->Timer: "Start timer for user session"
+activate Timer
+Timer->API: "Check user activity"
+alt Learning mode is active
+  loop User is active
+    API->Timer: "Reset timer"
+  end
+else Learning mode is inactive
+  loop User is active
+    API->Timer: "Reset timer"
+  end
+  alt User is inactive
+    Timer->API: "Logout user"
+    deactivate Timer
+    API->User: "Logout"
+    deactivate API
+    deactivate User
+  end
+end
+@enduml

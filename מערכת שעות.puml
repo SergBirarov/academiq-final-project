@@ -1,7 +1,7 @@
 @startuml "צפייה במערכת שעות"
 Actor User
 participant GUI as "Weekly Schedule"
-database Database_Course_Schedule as "Course_Schedule"
+participant Database_Course_Schedule as "Course_Schedule"
 
 activate User
 User->GUI: "Request Weekly Schedule"
