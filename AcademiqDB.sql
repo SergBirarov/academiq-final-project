@@ -8,11 +8,11 @@ GO
 CREATE DATABASE AcademiqDB
 COLLATE Hebrew_CI_AS  
 GO
-SET DATEFORMAT ymd;
 
 use AcademiqDB
 Go
 
+SET DATEFORMAT ymd;
 CREATE TABLE Cities(
 City_Code INT not null PRIMARY KEY ,
 City_Name NVARCHAR(50) null 
@@ -52,12 +52,14 @@ CREATE TABLE Lecturers (
 	City_Code INT NULL ,
 	FOREIGN KEY (City_Code) REFERENCES Cities(City_Code),
 	Password NVARCHAR(24) NULL, --NOT NULL
-);
+)
+GO
 
 CREATE TABLE Courses (
     CourseId INT NOT NULL PRIMARY KEY,
     CourseDescription NVARCHAR(50) NOT NULL
-);
+)
+GO
 
 CREATE TABLE Lecturers_In_Course (
     CourseId INT NOT NULL,
@@ -67,7 +69,8 @@ CREATE TABLE Lecturers_In_Course (
 	FOREIGN KEY (LecturerId) REFERENCES Lecturers(LecturerId),
 	FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
 	FOREIGN KEY (Department_Code) REFERENCES Departments(Department_Code)
-);
+)
+GO
 
 CREATE TABLE Students (
     StudentId INT NOT NULL PRIMARY KEY,
@@ -83,7 +86,8 @@ CREATE TABLE Students (
 	FOREIGN KEY (City_Code) REFERENCES Cities(City_Code),
 	Password NVARCHAR(24)  NULL, --NOT NULL
 
-);
+)
+GO
 
 CREATE TABLE Assignments (
     AssignmentId INT NOT NULL PRIMARY KEY,
@@ -94,7 +98,8 @@ CREATE TABLE Assignments (
 	Description NVARCHAR(MAX) NULL, 
 	FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)
 
-);
+)
+GO
 
 CREATE TABLE Assignment_Of_Student (
     AssignmentId INT NOT NULL,
@@ -107,7 +112,8 @@ CREATE TABLE Assignment_Of_Student (
 	FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
 	FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
 	PRIMARY KEY (AssignmentId,CourseId,StudentId)
-);
+)
+GO
 
 --test marks
 CREATE TABLE Marks (
@@ -119,7 +125,8 @@ CREATE TABLE Marks (
 	FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
 	FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
 	PRIMARY KEY (StudentId,CourseId,Date)
-);
+)
+GO
 
 
 CREATE TABLE Courses_On_Air (
@@ -145,7 +152,8 @@ CREATE TABLE Course_Schedule (
     PRIMARY KEY (Course_Code, Week_Day, Start_Time, End_Time),
     FOREIGN KEY (Course_Code) REFERENCES Courses_On_Air(Course_Code),
     FOREIGN KEY (Class_Code) REFERENCES Classes(Class_Code)
-);
+)
+GO
 
 
 CREATE TABLE Students_In_Course (
@@ -155,7 +163,8 @@ CREATE TABLE Students_In_Course (
     PRIMARY KEY (StudentId, CourseId, School_Year),
     FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
     FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)
-);
+)
+GO
 
 --new tables
 
@@ -170,7 +179,8 @@ Create Table Student_Notebook(
 	Foreign Key (StudentId) References Students(StudentId),
 	FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)
 	
-	);
+	)
+GO
 
 Create Table Lecturer_Msg(
 	MessageId INT Identity(1,1) Primary Key,
@@ -180,12 +190,14 @@ Create Table Lecturer_Msg(
 	MessageContent Nvarchar(400) not null,
 	SentDate DateTime Not Null,
 	ReadStatus bit Not Null,
-	);
+	)
+GO
 
 Create Table Role_codes(
 	Role_code smallint Not null PRIMARY KEY,
 	Role_desc Nvarchar(25),
-	);
+	)
+GO
 
 Create Table Roles (
 	Id int Not Null Primary Key, 
@@ -195,7 +207,8 @@ Create Table Roles (
 	Email Nvarchar(50) Not null UNIQUE,
 	Phone Nvarchar(13) UNIQUE,
 	Foreign Key (Role_code) References Role_codes(Role_code)
-	);
+	)
+GO
 
 
 
@@ -205,7 +218,8 @@ Create Table UI_Essentials(
 	--the field will calculate the ratio of size of the buttuns i.e - if in 50 percent of the time a specific button is pressed its size will be XL;
 	--s - 25%
 	--m - and so forth
-	);
+	)
+GO
 	
 
 
@@ -389,7 +403,8 @@ INSERT INTO Students_In_Course (StudentId, CourseId, School_Year) VALUES
 (7, 7, 2023),
 (8, 8, 2023),
 (9, 9, 2023),
-(10, 10, 2023);
+(10, 10, 2023)
+GO
 
 -- מחברת סטודנטים
 INSERT INTO Student_Notebook (StudentId, CourseId, File_type, Upload_date, File_URL) VALUES
@@ -402,7 +417,8 @@ INSERT INTO Student_Notebook (StudentId, CourseId, File_type, Upload_date, File_
 (7, 7, 'jpg', '2023-11-01', 'https://www.example.com/student_notebook_7.jpg'),
 (8, 8, 'txt', '2023-11-02', 'https://www.example.com/student_notebook_8.txt'),
 (9, 9, 'pdf', '2023-11-03', 'https://www.example.com/student_notebook_9.pdf'),
-(10, 10, 'docx', '2023-11-04', 'https://www.example.com/student_notebook_10.docx');
+(10, 10, 'docx', '2023-11-04', 'https://www.example.com/student_notebook_10.docx')
+GO
 
 -- הודעות מרצים
 INSERT INTO Lecturer_Msg (LecturerId, StudentId, MessageTitle, MessageContent, SentDate, ReadStatus) VALUES
@@ -420,12 +436,14 @@ INSERT INTO Lecturer_Msg (LecturerId, StudentId, MessageTitle, MessageContent, S
 -- תפקידים
 INSERT INTO Roles (Id, Name, Role_code, Password, Email, Phone) VALUES
 (1, 'מנהל', 1, 'admin123', 'admin@example.com', '054-1234567'),
-(2, 'מזכירה', 2, 'secretary123', 'secretary@example.com', '058-1111111');
+(2, 'מזכירה', 2, 'secretary123', 'secretary@example.com', '058-1111111')
+GO
 
 -- קודי תפקידים
 INSERT INTO Role_codes (Role_code, Role_desc) VALUES
 (1, 'מנהל'),
-(2, 'מזכירה');
+(2, 'מזכירה')
+GO
 
 	
 
@@ -438,7 +456,7 @@ INSERT INTO Role_codes (Role_code, Role_desc) VALUES
 
 	------------------------------------
 -- Cities
-CREATE PROCEDURE sp_InsertCity
+CREATE OR ALTER PROCEDURE sp_InsertCity
     @City_Code INT,
     @City_Name NVARCHAR(50)
 AS
@@ -458,7 +476,7 @@ END
 GO
 
 -- Departments
-CREATE PROCEDURE sp_InsertDepartment
+CREATE OR ALTER PROCEDURE sp_InsertDepartment
     @Department_Code INT,
     @Department_Name NVARCHAR(50),
     @HOD_Id INT = NULL
@@ -479,7 +497,7 @@ END
 GO
 
 -- Buildings
-CREATE PROCEDURE sp_InsertBuilding
+CREATE OR ALTER PROCEDURE sp_InsertBuilding
     @Building_Code INT,
     @Building_Name NVARCHAR(50)
 AS
@@ -499,7 +517,7 @@ END
 GO
 
 -- Classes
-CREATE PROCEDURE sp_InsertClass
+CREATE OR ALTER PROCEDURE sp_InsertClass
     @Class_Code INT,
     @Class_Name NVARCHAR(50),
     @Building_Code INT = NULL
@@ -520,7 +538,7 @@ END
 GO
 
 -- Lecturers
-CREATE PROCEDURE sp_InsertLecturer
+CREATE OR ALTER PROCEDURE sp_InsertLecturer
     @LecturerId INT,
     @FirstName NVARCHAR(50),
     @LastName NVARCHAR(50),
@@ -548,7 +566,7 @@ END
 GO
 
 -- Courses
-CREATE PROCEDURE sp_InsertCourse
+CREATE OR ALTER PROCEDURE sp_InsertCourse
     @CourseId INT,
     @CourseDescription NVARCHAR(50)
 AS
@@ -568,7 +586,7 @@ END
 GO
 
 -- Lecturers_In_Course
-CREATE PROCEDURE sp_InsertLecturerInCourse
+CREATE OR ALTER PROCEDURE sp_InsertLecturerInCourse
     @CourseId INT,
     @LecturerId INT,
     @School_Year INT,
@@ -590,7 +608,7 @@ END
 GO
 
 -- Students
-CREATE PROCEDURE sp_InsertStudent
+CREATE OR ALTER PROCEDURE sp_InsertStudent
     @StudentId INT,
     @FirstName NVARCHAR(50),
     @LastName NVARCHAR(50),
@@ -619,7 +637,7 @@ END
 GO
 
 -- Assignments
-CREATE PROCEDURE sp_InsertAssignment
+CREATE OR ALTER PROCEDURE sp_InsertAssignment
     @AssignmentId INT,
     @CourseId INT,
     @IsVisible BIT,
@@ -643,7 +661,7 @@ END
 GO
 
 -- Assignment_Of_Student
-CREATE PROCEDURE sp_InsertAssignmentOfStudent
+CREATE OR ALTER PROCEDURE sp_InsertAssignmentOfStudent
     @AssignmentId INT,
     @CourseId INT,
     @StudentId INT,
@@ -667,7 +685,7 @@ END
 GO
 
 -- Marks
-CREATE PROCEDURE sp_InsertMark
+CREATE OR ALTER PROCEDURE sp_InsertMark
     @StudentId INT,
     @CourseId INT,
     @Date INT,
@@ -690,7 +708,7 @@ END
 GO
 
 -- Courses_On_Air
-CREATE PROCEDURE sp_InsertCourseOnAir
+CREATE OR ALTER PROCEDURE sp_InsertCourseOnAir
     @Course_Code INT,
     @Open_Date DATE,
     @End_Date DATE,
@@ -714,7 +732,7 @@ END
 GO
 
 -- Course_Schedule
-CREATE PROCEDURE sp_InsertCourseSchedule
+CREATE OR ALTER PROCEDURE sp_InsertCourseSchedule
     @Course_Code INT,
     @Week_Day NVARCHAR(1),
     @Start_Time TIME,
@@ -737,7 +755,7 @@ END
 GO
 
 -- Students_In_Course
-CREATE PROCEDURE sp_InsertStudentInCourse
+CREATE OR ALTER PROCEDURE sp_InsertStudentInCourse
     @StudentId INT,
     @CourseId INT,
     @School_Year INT
@@ -758,7 +776,7 @@ END
 GO
 
 -- Student_Notebook
-CREATE PROCEDURE sp_InsertStudentNotebook
+CREATE OR ALTER PROCEDURE sp_InsertStudentNotebook
     @StudentId INT,
     @CourseId INT,
     @File_type VARCHAR(10),
@@ -780,7 +798,7 @@ END
 GO
 
 -- Lecturer_Msg
-CREATE PROCEDURE sp_InsertLecturerMsg
+CREATE OR ALTER PROCEDURE sp_InsertLecturerMsg
     @LecturerId INT,
     @StudentId INT,
     @MessageTitle NVARCHAR(20),
@@ -802,7 +820,7 @@ END
 GO
 
 -- Roles
-CREATE PROCEDURE sp_InsertRole
+CREATE OR ALTER PROCEDURE sp_InsertRole
     @Id INT,
     @Name NVARCHAR(20),
     @Role_code SMALLINT,
@@ -826,7 +844,7 @@ END
 GO
 
 -- Role_codes
-CREATE PROCEDURE sp_InsertRoleCode
+CREATE OR ALTER PROCEDURE sp_InsertRoleCode
     @Role_code SMALLINT,
     @Role_desc NVARCHAR(25)
 AS
@@ -902,4 +920,365 @@ CREATE OR ALTER VIEW vw_MarksWithStudentDetails AS
 	m.CourseId = c.CourseId
 GO
 -- פקודה להצגת ה-VIEW:
-SELECT * FROM vw_MarksWithStudentDetails;
+SELECT * FROM vw_MarksWithStudentDetails
+GO
+
+--רשימת הסטודנטים בקודס על פי הID של הקרוס
+CREATE  OR ALTER FUNCTION GetStudentsByCourse (@CourseId INT)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT
+        Students.StudentId,
+        Students.FirstName,
+        Students.LastName
+    FROM
+        Students
+    JOIN
+        Students_In_Course sic ON Students.StudentId = sic.StudentId
+    WHERE
+        sic.CourseId = @CourseId
+);
+GO
+
+-- שימוש בפונקציה
+SELECT * FROM dbo.GetStudentsByCourse(2)
+GO
+
+
+--פונקציה לחישוב ממוצע ציונים של סטודנט בקורס
+CREATE OR ALTER FUNCTION GetAverageMarkByCourse (@studentId INT, @courseId INT)
+RETURNS DECIMAL(4,2)
+AS
+BEGIN
+    DECLARE @averageMark DECIMAL(4,2);
+
+    SELECT @averageMark = AVG(Mark) 
+    FROM Marks 
+    WHERE StudentId = @studentId AND CourseId = @courseId;
+
+    RETURN @averageMark;
+END
+GO
+
+-- שימוש בפונקציה
+SELECT StudentId, CourseId, dbo.GetAverageMarkByCourse(StudentId, CourseId) AS AverageMark FROM Marks
+GO
+
+
+--פונקציה לקבלת רשימת קורסים של מרצה מסוים
+CREATE OR ALTER FUNCTION GetLecturerCourses (@LecturerId INT)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT 
+        c.CourseId,
+        c.CourseDescription
+    FROM 
+        Courses c
+    JOIN
+        Lecturers_In_Course lic ON c.CourseId = lic.CourseId
+    WHERE 
+        lic.LecturerId = @LecturerId
+)
+GO
+
+-- שימוש בפונקציה
+SELECT * FROM dbo.GetLecturerCourses(1)
+GO
+
+
+--פונקציה לקבלת רשימת קורסים של סטודנט מסוים
+CREATE OR ALTER FUNCTION GetStudentCourses (@StudentId INT)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT 
+        Courses.CourseId,
+		Courses.CourseDescription
+    FROM 
+        Courses
+    JOIN
+        Students_In_Course sic ON Courses.CourseId = sic.CourseId
+    WHERE 
+        sic.StudentId = @StudentId
+)
+GO
+
+-- שימוש בפונקציה
+SELECT * FROM dbo.GetStudentCourses(2)
+GO
+
+
+--פונקציה לבדיקת האם סטודנט רשום לקורס מסוים
+CREATE OR ALTER FUNCTION IsStudentInCourse (@studentId INT, @courseId INT)
+RETURNS BIT
+AS
+BEGIN
+    DECLARE @isInCourse BIT
+
+    IF EXISTS (SELECT 1 FROM Students_In_Course WHERE StudentId = @studentId AND CourseId = @courseId)
+    BEGIN
+        SET @isInCourse = 1;
+    END
+    ELSE
+    BEGIN
+        SET @isInCourse = 0;
+    END;
+
+    RETURN @isInCourse
+END
+GO
+
+-- שימוש בפונקציה
+SELECT StudentId, CourseId, dbo.IsStudentInCourse(StudentId, CourseId) AS InCourse FROM Students_In_Course
+GO
+
+
+
+CREATE OR ALTER FUNCTION GetStudentMarksWithDetails (@studentId INT)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT 
+        s.FirstName,
+        s.LastName,
+        c.CourseDescription,
+        m.Mark
+    FROM
+        Students s
+    JOIN
+        Marks m ON s.StudentId = m.StudentId
+    JOIN
+        Courses c ON m.CourseId = c.CourseId
+    WHERE
+        s.StudentId = @studentId
+)
+GO
+
+-- שימוש בפונקציה
+SELECT * FROM dbo.GetStudentMarksWithDetails(1)
+GO
+
+
+--בדיקת תאריך הגשה של מטלה 
+CREATE OR ALTER FUNCTION IsAssignmentSubmittedOnTime (@studentId INT, @assignmentId INT)
+RETURNS BIT
+AS
+BEGIN
+    DECLARE @submissionDate DATETIME
+    DECLARE @deadline DATETIME
+
+    -- קבלת תאריך הגשת המטלה
+    SELECT @submissionDate = SelfDeadline
+    FROM Assignment_Of_Student
+    WHERE StudentId = @studentId AND AssignmentId = @assignmentId
+
+    -- קבלת תאריך אחרון להגשה
+    SELECT @deadline = Deadline 
+    FROM Assignments
+    WHERE AssignmentId = @assignmentId
+
+    -- השוואת התאריכים
+    IF @submissionDate <= @deadline
+        RETURN 1
+    
+    RETURN 0
+
+END
+GO
+
+CREATE OR ALTER VIEW vw_StudentAssignmentsWithStatus
+AS
+SELECT 
+    s.FirstName,
+    s.LastName,
+    a.Description AS AssignmentDescription,
+    dbo.IsAssignmentSubmittedOnTime(s.StudentId, a.AssignmentId) AS SubmittedOnTime
+FROM
+    Students s
+JOIN
+    Assignment_Of_Student aos ON s.StudentId = aos.StudentId
+JOIN
+    Assignments a ON aos.AssignmentId = a.AssignmentId;
+GO
+
+-- שימוש ב-VIEW
+SELECT * FROM vw_StudentAssignmentsWithStatus
+GO
+
+
+--טריגר להגדרת ערך ברירת מחדל לשדה ReadStatus
+CREATE OR ALTER TRIGGER tr_SetReadStatusDefault
+ON Lecturer_Msg
+AFTER INSERT
+AS
+BEGIN
+    -- עדכון שדה ReadStatus ל-0 (לא נקרא) עבור כל רשומה חדשה
+    UPDATE Lecturer_Msg
+    SET ReadStatus = 0
+    WHERE MessageId IN (SELECT MessageId FROM inserted);
+END;
+GO
+
+CREATE OR ALTER TRIGGER tr_UpdateStudentEnrollmentDate
+ON Students
+AFTER INSERT
+AS
+BEGIN
+    -- קבלת ה-StudentId מהרשומה שהוכנסה
+    DECLARE @studentId INT = (SELECT StudentId FROM inserted)
+
+    -- עדכון שדה Enrollment בטבלת Students
+    UPDATE Students
+    SET Enrollment = GETDATE()
+    WHERE StudentId = @studentId
+END
+GO
+
+-- שם הפרוצדורה
+CREATE OR ALTER PROCEDURE sp_FullBackup
+    @backupPath VARCHAR(256)
+AS
+BEGIN
+	DECLARE @databaseName VARCHAR(128)
+	SET @databaseName = 'AcademiqDB'
+    -- ודא שהנתיב לגיבוי קיים
+    IF NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = @databaseName)
+    BEGIN
+        RAISERROR('בסיס הנתונים לא קיים.', 16, 1);
+        RETURN;
+    END;
+
+    -- יצירת גיבוי מלא
+	SET @backupPath = @backupPath + '\' + @databaseName + '_FullBackup.bak'
+
+
+    BACKUP DATABASE @databaseName
+    TO DISK = @backupPath
+    WITH FORMAT;
+
+    -- הודעה על גיבוי מוצלח
+    PRINT 'גיבוי מלא של בסיס הנתונים ' + @databaseName + ' בוצע בהצלחה.';
+END;
+GO
+
+-- שימוש בפרוצדורה
+EXEC sp_FullBackup @backupPath = 'C:\SQLBackups'
+GO
+
+
+-- שם הפרוצדורה
+CREATE OR ALTER PROCEDURE sp_FullRestore
+    @backupPath VARCHAR(256)
+AS
+BEGIN
+    -- התחלת טרנזקציה
+    BEGIN TRANSACTION
+    BEGIN TRY
+
+		DECLARE @databaseName VARCHAR(128)
+		SET @databaseName = 'AcademiqDB'
+		SET @backupPath = @backupPath + '\' + @databaseName + '_FullBackup.bak'
+
+        -- שחזור מלא
+        RESTORE DATABASE @databaseName
+        FROM DISK = @backupPath
+        WITH REPLACE;
+
+        -- אישור הטרנזקציה
+        COMMIT TRANSACTION
+        -- הודעה על שחזור מוצלח
+        PRINT 'שחזור מלא של בסיס הנתונים ' + @databaseName + ' בוצע בהצלחה.';
+    END TRY
+    BEGIN CATCH
+        -- הצגת הודעת שגיאה למשתמש
+        RAISERROR('שגיאה במהלך שחזור בסיס הנתונים.', 16, 1);
+        -- ביטול הטרנזקציה במקרה של שגיאה
+		--IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION
+    END CATCH
+END;
+GO
+
+-- שימוש בפרוצדורה
+use master
+GO
+EXEC AcademiqDB.dbo.sp_FullRestore @backupPath = 'C:\SQLBackups'
+GO
+use AcademiqDB
+GO
+
+
+
+
+-- הגדרת תפקיד למרצה
+CREATE ROLE LecturerRole;
+-- מתן הרשאות לתפקיד מרצה
+GRANT CONNECT TO LecturerRole;
+GRANT SELECT ON dbo.Students TO LecturerRole;
+GRANT SELECT ON dbo.Courses TO LecturerRole;
+GRANT SELECT ON dbo.Marks TO LecturerRole;
+GRANT UPDATE ON dbo.Marks TO LecturerRole; -- עדכון טבלת ציונים
+GRANT INSERT ON dbo.Lecturer_Msg TO LecturerRole; -- שליחת הודעות
+GRANT SELECT ON dbo.Lecturer_Msg TO LecturerRole; -- קריאה של הודעות
+
+
+-- הגדרת תפקיד לסטודנט
+CREATE ROLE StudentRole;
+-- מתן הרשאות לתפקיד סטודנט
+GRANT CONNECT TO StudentRole;
+GRANT SELECT ON dbo.Students TO StudentRole;
+GRANT SELECT ON dbo.Courses TO StudentRole;
+GRANT SELECT ON dbo.Assignments TO StudentRole;
+GRANT SELECT ON dbo.Assignment_Of_Student TO StudentRole;
+GRANT UPDATE ON dbo.Assignment_Of_Student TO StudentRole; -- עדכון סטטוס הגשת מטלה
+GRANT INSERT ON dbo.Student_Notebook TO StudentRole; -- הוספת תוכן למחברת הסטודנט
+GRANT SELECT ON dbo.Student_Notebook TO StudentRole; -- קריאה מהמחברת
+GRANT SELECT ON dbo.Lecturer_Msg TO StudentRole; -- קריאה של הודעות
+GRANT UPDATE ON dbo.Lecturer_Msg TO StudentRole; -- עדכון סטטוס קריאה של הודעות
+
+
+-- הגדרת תפקיד למזכירה
+CREATE ROLE SecretaryRole;
+-- מתן הרשאות לתפקיד מזכירה
+GRANT CONNECT TO SecretaryRole;
+GRANT SELECT ON dbo.Courses_On_Air TO SecretaryRole;
+GRANT SELECT ON dbo.Course_Schedule TO SecretaryRole;
+GRANT UPDATE ON dbo.Courses_On_Air TO SecretaryRole; -- שינוי לוח שנה
+GRANT UPDATE ON dbo.Course_Schedule TO SecretaryRole; -- שינוי מערכת שבועית
+GRANT SELECT ON dbo.Students TO SecretaryRole;
+GRANT SELECT ON dbo.Lecturers TO SecretaryRole;
+
+
+-- הגדרת תפקיד למנהל
+CREATE ROLE AdminRole;
+-- מתן הרשאות לתפקיד מנהל
+GRANT CONNECT TO AdminRole;
+GRANT VIEW DEFINITION TO AdminRole;
+GRANT ALTER ANY USER TO AdminRole;
+GRANT CREATE USER TO AdminRole;
+GRANT SELECT, INSERT, UPDATE, REFERENCES, EXECUTE ON SCHEMA::dbo TO AdminRole;
+--DENY DELETE TO AdminRole; -- מניעת מחיקת נתונים
+
+
+-- יצירת משתמש
+CREATE LOGIN LecturerUser WITH PASSWORD = 'Password123';
+CREATE LOGIN StudentUser WITH PASSWORD = 'Password456';
+CREATE LOGIN SecretaryUser WITH PASSWORD = 'Password789';
+CREATE LOGIN AdminUser WITH PASSWORD = 'Password000';
+
+CREATE USER LecturerUser FOR LOGIN LecturerUser;
+CREATE USER StudentUser FOR LOGIN StudentUser;
+CREATE USER SecretaryUser FOR LOGIN SecretaryUser;
+CREATE USER AdminUser FOR LOGIN AdminUser;
+
+-- חיבור המשתמש לתפקיד
+ALTER ROLE LecturerRole ADD MEMBER LecturerUser;
+ALTER ROLE StudentRole ADD MEMBER StudentUser;
+ALTER ROLE SecretaryRole ADD MEMBER SecretaryUser;
+ALTER ROLE AdminRole ADD MEMBER AdminUser;
