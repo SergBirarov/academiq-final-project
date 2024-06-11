@@ -1,4 +1,11 @@
-chat - mongo RT
-SQL view for each page
-mocup for each page
-qa - STD/STP for 3 main procs (seif 5)
+2) Tami's SQL Proj
+3) qa - STD/STP for 3 main procs (seif 5)
+4) mocup for each page - Sergio
+
+Non critical or now
+5) SQL view for each page
+6) chat - mongo RT
+
+
+Done
+1) Expess - DONE

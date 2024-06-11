@@ -4,6 +4,9 @@ import adminRouter from './Admin/admin.routes';
 import assignmentRouter from './Assignments/assignments.routes';
 import msgSystemRouter from './MsgSystem/msgSystem.routes';
 import weekendScheduleRouter from './WeekendSchedule/weekendSchedule.routes';
+import courseMateialRouter from './CourseMaterial/courseMaterial.routes';
+import sharingSysRouter from './SharingSys/sharingSys.routes';
+import chatRouter from './Chat/chat.routes';
 
 //env configs
 const PORT = 5555;
@@ -20,6 +23,9 @@ app.use('/api/admin', adminRouter);
 app.use('/api/assignment', assignmentRouter);
 app.use('/api/msg', msgSystemRouter);
 app.use('/api/weekendSchedule', weekendScheduleRouter);
+app.use('/api/courseMateial', courseMateialRouter);
+app.use('/api/sharingSysRouter', sharingSysRouter);
+app.use('/api/chatRouter', chatRouter);
 
 //run the server
 app.listen(PORT, () => console.log(`[Server] running at http://localhost:${PORT}`));

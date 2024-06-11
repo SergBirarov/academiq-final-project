@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { GetYearlySchedule, PostYearlySchedule,UpdateYearlySchedule } from './YearlySchedule.controller';
+import { GetYearlySchedule, PostYearlySchedule,UpdateYearlySchedule } from './yearlySchedule.controller';
 
 const YearlyScheduleRouter = Router();
 

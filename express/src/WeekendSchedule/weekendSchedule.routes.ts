@@ -4,7 +4,9 @@ import { getWeekendSchedule, postWeekendSchedule as putWeekendSchedule, updateWe
 const WeekendScheduleRouter = Router();
 
 WeekendScheduleRouter
+  //Luctures & Students
   .get('/', getWeekendSchedule)
+  //Mazkira
   .put('/set', putWeekendSchedule)
   .post('/update', updateWeekendSchedule)
 

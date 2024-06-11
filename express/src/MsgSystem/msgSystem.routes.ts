@@ -4,9 +4,9 @@ import { createMsg, deleteMsg, readMsg } from './msgSystem.controller';
 const MsgSystemRouter = Router();
 
 MsgSystemRouter
-  .get('/', readMsg)
-  .post('/send', createMsg)
-  .delete('/del', deleteMsg)
+  .get('/:{id}/', readMsg)//??
+  .post('/:{id}/send', createMsg)
+  .delete('/:{id}/del', deleteMsg)
  
 
 
