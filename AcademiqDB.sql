@@ -1,4 +1,4 @@
-﻿/*
+/*
 use master
 GO
 drop database AcademiqDB
@@ -1282,3 +1282,55 @@ ALTER ROLE LecturerRole ADD MEMBER LecturerUser;
 ALTER ROLE StudentRole ADD MEMBER StudentUser;
 ALTER ROLE SecretaryRole ADD MEMBER SecretaryUser;
 ALTER ROLE AdminRole ADD MEMBER AdminUser;
+
+
+-- sql to csv and vice verca
+
+Exec sp_ configure 'Show advanced options',1
+ Reconfigure
+go
+
+sp-configure 'xp_cmdshell', '1'
+reconfigure with override
+Go
+
+ CREATE OR ALTER PROCEDURE sp_Export_Csv
+    @table_name NVARCHAR(50)
+AS
+BEGIN
+    BEGIN TRANSACTION;
+    BEGIN TRY
+        DECLARE @file_name VARCHAR(50);
+        DECLARE @command VARCHAR(200);
+        
+        SET @file_name = 'D:\' + @table_name + '.csv'; 
+        SET @command = 'bcp ' + QUOTENAME(DB_NAME()) + '.dbo.'
+				 + QUOTENAME(@table_name) + ' out ' + @file_name + ' -c -T -S ' 
+					+ @@SERVERNAME; -- Added QUOTENAME for safety and changed -N -w to -c
+        
+        PRINT @command; 
+        -- EXEC xp_cmdshell @command; --  execute the command.
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+            
+        RAISERROR('Error occurred during the database operation.', 16, 1);
+    END CATCH;
+    
+    IF @@TRANCOUNT > 0
+        COMMIT TRANSACTION;
+END;
+GO
+
+	
+			
+			
+
+
+
+
+
+
+
+
