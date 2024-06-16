@@ -1286,13 +1286,16 @@ ALTER ROLE AdminRole ADD MEMBER AdminUser;
 
 -- sql to csv and vice verca
 
-Exec sp_ configure 'Show advanced options',1
+Exec sp_configure 'Show advanced options',1
  Reconfigure
 go
 
-sp-configure 'xp_cmdshell', '1'
+sp_configure 'xp_cmdshell', '1'
 reconfigure with override
 Go
+
+use AcademiqDB
+go
 
  CREATE OR ALTER PROCEDURE sp_Export_Csv
     @table_name NVARCHAR(50)
@@ -1303,13 +1306,13 @@ BEGIN
         DECLARE @file_name VARCHAR(50);
         DECLARE @command VARCHAR(200);
         
-        SET @file_name = 'D:\' + @table_name + '.csv'; 
-        SET @command = 'bcp ' + QUOTENAME(DB_NAME()) + '.dbo.'
-				 + QUOTENAME(@table_name) + ' out ' + @file_name + ' -c -T -S ' 
-					+ @@SERVERNAME; -- Added QUOTENAME for safety and changed -N -w to -c
+		SET @file_name = 'C:\School\SQLBackups\' + @table_name + '.csv'; 
+		SET @command = 'bcp ' + QUOTENAME(DB_NAME()) + '.dbo.'
+             + QUOTENAME(@table_name) + ' out ' + @file_name + ' -c -t, -T -S '
+ 
         
         PRINT @command; 
-        -- EXEC xp_cmdshell @command; --  execute the command.
+         EXEC master..xp_cmdshell @command; --  execute the command.
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0
@@ -1322,6 +1325,31 @@ BEGIN
         COMMIT TRANSACTION;
 END;
 GO
+
+Exec sp_Export_Csv @table_name = 'Classes'
+go
+
+
+declare @name varchar(50)
+declare @fileName varchar(50)
+declare @command varchar(200)
+set @name = 'Students'
+set @fileName = 'C:\Users\sergb\OneDrive\Desktop\SQLtoCSVAcademiQ\' + @name + '.csv'
+set @command = 'bcp ' + db_name() +'.dbo.'+@name + ' out '
++ @fileName +' -c -t, -T -S ' 
+select @command
+EXEC master..xp_cmdshell @command;
+go
+
+select @@SERVERNAME
+go
+
+
+
+
+
+
+
 
 	
 			
