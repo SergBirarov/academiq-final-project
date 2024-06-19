@@ -3,6 +3,8 @@ use master
 GO
 drop database AcademiqDB
 GO
+
+Do not run the code all at once, instead run parts of it manually.
 */
 
 CREATE DATABASE AcademiqDB
@@ -1330,14 +1332,14 @@ Exec sp_Export_Csv @table_name = 'Classes'
 go
 
 
-declare @name varchar(50)
+declare @table_name varchar(50)
 declare @fileName varchar(50)
 declare @command varchar(200)
-set @name = 'Students'
-set @fileName = 'C:\Users\sergb\OneDrive\Desktop\SQLtoCSVAcademiQ\' + @name + '.csv'
-set @command = 'bcp ' + db_name() +'.dbo.'+@name + ' out '
+set @table_name = 'Students'
+set @fileName = 'E:\' + @table_name + '.csv'
+set @command = 'bcp ' + db_name() +'.dbo.'+@table_name + ' out '
 + @fileName +' -c -t, -T -S ' 
-select @command
+Print @command
 EXEC master..xp_cmdshell @command;
 go
 
@@ -1345,20 +1347,35 @@ select @@SERVERNAME
 go
 
 
+CREATE OR ALTER PROCEDURE BulkInsertData
+    @FileName VARCHAR(255),
+    @TableName VARCHAR(128)
+AS
+BEGIN
+    DECLARE @BulkInsertCommand NVARCHAR(MAX);
+    SET @BulkInsertCommand = 'BULK INSERT ' + @TableName + '  
+        FROM ''' + @FileName + '''
+        WITH (
+            CODEPAGE = ''ACP'', 
+            FIRSTROW = 2, 
+            MAXERRORS = 0,
+            FIELDTERMINATOR = '','', 
+            ROWTERMINATOR = ''\n'' 
+        );'; 
+    EXEC sp_executesql @BulkInsertCommand;
+END;
+GO
 
 
+EXEC BulkInsertData @FileName = 'C:\Users\misha\OneDrive\Desktop\HTML\academiq-final-project\Marks.csv', @TableName = 'Marks';
 
-
-
+select * from Marks
 
 	
 			
-			
+		
+--INSERT INTO OPENROWSET('Microsoft.ACE.OLEDB.12.0','Excel 12.0; Database=AcademiqDB;','SELECT * FROM [Sheet1$]')
+--SELECT * FROM Students
 
-
-
-
-
-
-
+   ​
 
