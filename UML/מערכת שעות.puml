@@ -20,7 +20,7 @@ GUI->User: "Enter new schedule details"
 User->GUI: "Submit new schedule details"
 GUI->Database_Course_Schedule: "Update Course_Schedule with new schedule data"
 activate Database_Course_Schedule
-Database_Course_Schedule->GUI: "Confirmation of update success/failure"
+Database_Course_Schedule-->GUI: "Confirmation of update success/failure"
 deactivate Database_Course_Schedule
 GUI->User: "Display confirmation message"
 deactivate GUI

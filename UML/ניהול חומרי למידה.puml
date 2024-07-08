@@ -1,16 +1,16 @@
-@startuml "ניהול חומרי למידה"
+@startuml "Learning Material Management"
 Actor User
 participant GUI as "CourseNote"
 participant Study_Meterials as "Study_Meterials"
 
 activate User
-User->GUI: "v"
+User->GUI: "Opens the CourseNote application"
 activate GUI
-GUI->Study_Meterials: "v"
+GUI->Study_Meterials: "Requests learning materials from Study_Meterials"
 activate Study_Meterials
-Study_Meterials->GUI: "v"
+Study_Meterials->GUI: "Returns learning materials to CourseNote"
 deactivate Study_Meterials
-GUI->User: "v" 
+GUI->User: "Displays learning materials to the user" 
 deactivate GUI
 deactivate User
 @enduml

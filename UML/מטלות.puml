@@ -3,7 +3,7 @@ Actor Timer
 ' Actor User
 Actor Student
 Actor Lecturer
-participant API as "Assignment API"
+participant API as "Assignment Screen"
 participant Database_Assignments as "Assignments Database"
 
 alt Lecturer

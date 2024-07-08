@@ -1,6 +1,6 @@
 @startuml "פעילות טיימר עבור חיבור משתמש"
 Actor User
-participant Timer as "Timer"
+Actor Timer as "Timer"
 participant API as "System"
 
 User->API: "Login"
