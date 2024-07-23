@@ -4,7 +4,6 @@ GO
 drop database AcademiqDB
 GO
 
-Do not run the code all at once, instead run parts of it manually.
 */
 
 CREATE DATABASE AcademiqDB
@@ -1372,10 +1371,7 @@ EXEC BulkInsertData @FileName = 'C:\Users\misha\OneDrive\Desktop\HTML\academiq-f
 select * from Marks
 
 	
-			
-		
---INSERT INTO OPENROWSET('Microsoft.ACE.OLEDB.12.0','Excel 12.0; Database=AcademiqDB;','SELECT * FROM [Sheet1$]')
---SELECT * FROM Students
+	
 
    ​
 
