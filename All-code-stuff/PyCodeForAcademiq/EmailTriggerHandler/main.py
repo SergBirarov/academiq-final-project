@@ -3,6 +3,27 @@ from trigger_monitor import TriggerMonitor
 if __name__ == "__main__":
     monitor = TriggerMonitor()
     monitor.run()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 '''
 CREATE TABLE TriggerLog (
     LogID INT IDENTITY(1,1) PRIMARY KEY,

@@ -4,17 +4,15 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 import os
-from database_connection import DatabaseConnection  # Import the connection class
+from database_connection import DatabaseConnection
 
 
 class TriggerMonitor:
     def __init__(self):
-        # Email Settings
         load_dotenv()
         self.sender_email = os.getenv("SENDER_EMAIL")
         self.sender_password = os.getenv("SENDER_PASSWORD")
 
-        # Database connection
         self.db_conn = DatabaseConnection()
         self.db_conn.connect()
 
@@ -61,20 +59,17 @@ class TriggerMonitor:
                     "SELECT * FROM TriggerLog ORDER BY LogID DESC")
                 events = self.db_conn.cursor.fetchall()
 
-                # Process events
                 for event in events:
                     self.handle_trigger_event(event)
 
-                    # After processing, delete the event from TriggerLog
                     self.db_conn.cursor.execute(
                         f"DELETE FROM TriggerLog WHERE LogID = {event[0]}"
                     )
-                    self.db_conn.conn.commit()
+                    self.db_conn.connection.commit()
                     print(
                         f"Event with LogID {event[0]} processed and deleted.")
 
-                # Sleep briefly to avoid excessive polling
-                # Adjust based on how frequent you expect trigger events
+                # תדירות הבדיקות
                 time.sleep(1800)
 
         except Exception as e:
