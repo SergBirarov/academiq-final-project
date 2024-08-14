@@ -38,8 +38,16 @@ def handle_trigger_event(event):
     object_name = event[3]
     user_email = event[4]
 
-    subject = f'Trigger {trigger_name} Fired!'
-    body = f"Trigger '{trigger_name}' fired for object '{object_name}'. Action: '{action}'.\nUser Email: {user_email}"
+    match(trigger_name):
+        case 'UserRegistrationTrigger':
+            subject = f"Object '{object_name}' created by user '{user_email}'."
+            body = f"Trigger '{trigger_name}' fired for object '{object_name}'. Action: '{action}'.\nUser Email: {user_email}"
+            print(subject + "\n" + body)
+        case default:
+            subject = f"Object '{object_name}' created by user '{user_email}'."
+            body = f"Trigger '{trigger_name}' fired for object '{object_name}'. Action: '{action}'.\nUser Email: {user_email}"
+            print(f"Object '{object_name}' updated by user '{user_email}'.")
+
     send_email(subject, body, user_email)
 
 
