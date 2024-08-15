@@ -1,7 +1,7 @@
 import fitz
 import os
 
-image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.tif', '.webp', '.svg']
+image_extensions = ['jpg', 'jpeg', 'png', 'gif', '.bmp', '.tiff', '.tif', '.webp', '.svg']
 
 
 def get_rect(coordinates):
@@ -29,27 +29,38 @@ class PDFManager:
             text += page.get_text() + '\n'
         return text
 
-    def merge_docs(self, other_pdf_path, new_file_name):
+    def merge_docs(self, other_pdf_path, save_directory=None):
         if not self.doc:
             raise Exception('To merge, upload 2 or more files.')
         if not other_pdf_path:
             raise Exception('To merge, upload 2 or more files(1).')
-        doc = fitz.open(other_pdf_path)
-        self.doc.insert_pdf(doc)
-        return None
+
+        other_doc = fitz.open(other_pdf_path)
+
+        self.doc.insert_pdf(other_doc)
+        file_name = f"{self.get_file_name()}_merged.pdf"
+
+        if save_directory:
+            new_file_name = os.path.join(save_directory, file_name)
+        else:
+            new_file_name = file_name
+        try:
+            self.doc.save(new_file_name)
+        except Exception as e:
+            raise Exception(f'Error saving the merged document: {e}')
+        return f"Merged document saved successfully at {save_directory}." \
+            if save_directory \
+            else "Merged document saved in the current directory."
 
     def find_coordinates(self, text):
         if not self.doc or not text:
             raise Exception('Document not loaded or text not provided.')
-        text_instances = set()
-        page_number = 0
         for page_num in range(self.doc.page_count):
             page = self.doc.load_page(page_num)
-            instances = page.search_for(text)
-            if instances:
-                text_instances.update(instances)
-                page_number = page_num
-        return text_instances, page_number
+            instance = page.search_for(text)
+            if instance:
+                return instance[0], page_num
+        raise Exception(f'Text "{text}" not found in the document.')
 
     def get_file_name(self):
         full_path = self.doc.name
@@ -57,21 +68,23 @@ class PDFManager:
         name = os.path.splitext(file_name)[0]
         return name
 
-    def annotate_pdf(self, page, coordinates):
+    def annotate_pdf(self, text):
         if not self:
             raise Exception('No file to annotate.')
         file_name = self.get_file_name()
         try:
-            _page = self.doc.load_page(page)
+            rect, page_num = self.find_coordinates(text)
+            _page = self.doc.load_page(page_num)
         except fitz.FileDataError:
             raise Exception(f"Couldn't load file: {file_name}.")
-        rect = get_rect(coordinates)
+
         try:
             highlight = _page.add_highlight_annot(rect)
             highlight.update()
         except Exception as e:
             raise Exception(f'Highlight of {file_name}: {e}')
-        self.doc.save(self.pdf_path)
+
+        self.doc.saveIncr()
         return "Highlighted document saved successfully."
 
     def check_for_images(self):
@@ -84,13 +97,10 @@ class PDFManager:
             return True
         return False
 
-    def extract_images(self, page_number, extension, save_path):
-        if not save_path:
-            save_path = self.pdf_path
+    def extract_images(self, page_number, save_path=None):
         if self.check_for_images():
             raise Exception('No images found on page.')
-        if extension.lower() not in image_extensions:
-            raise Exception(f'{extension} is not a valid image file extension.')
+
         doc_name = self.get_file_name()
         page = self.doc.load_page(page_number)
         images = page.get_images(full=True)
@@ -100,18 +110,23 @@ class PDFManager:
             xref = image[image_index]
             base_image = self.doc.extract_image(xref)
             image_bytes = base_image["image"]
-            image_ext = base_image[f'{extension.lower()}']
-            image_name = f"{doc_name} - page {page_number}.{image_ext}"
+            image_ext = base_image["ext"]
+            image_name = f"{doc_name} - page {page_number} - image{image_index + 1}.{image_ext}"
 
             if save_path:
                 if not os.path.exists(save_path):
                     os.makedirs(save_path)
-                image_name = os.path.join(save_path, image_name)
 
-            with open(image_name, "wb") as img_file:
+            image_path = os.path.join(os.path.dirname(self.pdf_path), image_name)
+
+            with open(image_path, "wb") as img_file:
                 img_file.write(image_bytes)
 
-            saved_images.append(image_name)
+            saved_images.append(image_path)
 
-        return saved_images
+        return f"Images saved at {img_file}" if saved_images else "No images were saved."
 
+    def convert_to_binary(self):
+        with open(self.pdf_path, 'rb') as file:
+            binary_data = file.read()
+        return binary_data

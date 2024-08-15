@@ -17,7 +17,12 @@ class DatabaseConnection:
     def connect(self):
         try:
             self.connection = pyodbc.connect(
-                f'DRIVER={{SQL Server}};SERVER={self.server};DATABASE={self.database};UID={self.username};PWD={self.password};TrustServerCertificate=True'
+                f'DRIVER={{SQL Server}};'
+                f'SERVER={self.server};'
+                f'DATABASE={self.database};'
+                f'UID={self.username};'
+                f'PWD={self.password};'
+                f'TrustServerCertificate=True'
             )
             self.cursor = self.connection.cursor()
             print("Database connection established successfully!")
