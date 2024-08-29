@@ -1,0 +1,453 @@
+What will be in this database:
+
+  //
+    -Students
+        -Id
+        -First name
+        -Last name
+        -Address
+            -City
+            -Street
+            -Number
+        -Phone
+        -DateOfBirth
+        -Enrollment
+        -Email
+        -ProfileImage
+        -Asignments[]
+            -AsignmentId
+            -UploadedFile
+            -Date
+            -Grade
+        -Notebooks[]
+            -Id
+            -CourseId
+            -LastUpdate
+            -FileURL
+        -Courses
+            -Id
+            
+        
+
+    -Professor
+        -Id
+        -First name
+        -Last name
+        -Address
+            -City
+            -Street
+            -Number
+        -Phone
+        -DateOfBirth
+        -OccupationStart
+        -EducationLevel
+        -Email
+        -ProfileImage
+        -Password
+        -CurrentCourses[]
+            -CourseId
+            -Year
+            -Semester
+
+    -Courses 
+        -CourseId
+        -name
+        -points
+        -field
+
+    -Asignments
+        -AsignmentsId
+        -CourseId
+        -DueDate
+        -Requirements
+        -File_URL
+        -IsListed
+        
+
+    -Marks
+        -StudentId
+            -SemesterA
+                -CourseId
+                -Grade
+            -SemesterB
+                -CourseId   
+                -Grade
+
+
+
+
+Entitieis:
+    -Student
+    -Professor 
+    -Admin
+
+    -Course
+    -Buildings
+    -Address (embeded)
+    -Asignments (embeded)
+    -Notebooks (embeded)
+    -CurrentCourses (embeded)
+    
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Here’s a revised version of your schema:
+
+  "students": {
+    "id": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "address": {
+      "city": "string",
+      "street": "string",
+      "number": "string"
+    },
+    "phone": "string",
+    "dateOfBirth": "ISODate",
+    "enrollmentDate": "ISODate",
+    "email": "string",
+    "profileImage": "string",
+    "assignments": [
+      {
+        "assignmentId": "string",
+        "uploadedFile": "string",
+        "date": "ISODate",
+        "grade": "int"
+      }
+    ],
+    "notebooks": [
+      {
+        "id": "string",
+        "course": "string",
+        "lastUpdate": "ISODate",
+        "fileURL": ["string"]
+      }
+    ]
+  }
+
+  "professors": {
+    "id": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "address": {
+      "city": "string",
+      "street": "string",
+      "number": "string"
+    },
+    "phone": "string",
+    "dateOfBirth": "ISODate",
+    "occupationStart": "ISODate",
+    "educationLevel": "string",
+    "email": "string",
+    "profileImage": "string",
+    "password": "string",
+    "currentCourses": [
+      {
+        "courseId": "string",
+        "year": "int",
+        "semester": "string"
+      }
+    ]
+  }
+
+  "courses": {
+    "courseId": "string",
+    "name": "string",
+    "points": "int",
+    "field": "string"
+  }
+
+  "assignments": {
+    "assignmentId": "string",
+    "courseId": "string",
+    "dueDate": "ISODate",
+    "requirements": "string",
+    "fileURL": "string",
+    "isListed": "bool"
+  }
+
+  "marks": {
+    "studentId": "string",
+    "semesterA": [
+      {
+        "courseId": "string",
+        "grade": ["int"]
+      }
+    ],
+    "semesterB": [
+      {
+        "courseId": "string",
+        "grade": ["int"]
+      }
+    ]
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+### Examples of Everything You Need to Hand In
+
+1. **Database Structure**:
+   - Provide a detailed JSON structure (as shown above) for each collection.
+   - Explain why you chose to embed or reference certain documents.
+
+2. **Data Modeling Explanation**:
+   - Describe the relationships between different entities (e.g., Students to Assignments, Professors to Courses).
+   - Justify the design choices, particularly for embedding vs. referencing.
+
+3. **Sample MongoDB Shell Commands**:
+   - Provide examples of how to create, read, update, and delete documents within each collection.
+   - Example:
+     ```javascript
+     // Insert a new student
+     
+     db.students.insertOne({
+       "id": "001",
+       "firstName": "John",
+       "lastName": "Doe",
+       "address": {
+         "city": "Tel Aviv",
+         "street": "Herzl",
+         "number": "23"
+       },
+       "phone": "0501234567",
+       "dateOfBirth": ISODate("2000-01-01T00:00:00Z"),
+       "enrollmentDate": ISODate("2018-09-01T00:00:00Z"),
+       "email": "johndoe@example.com",
+       "profileImage": "profile.jpg",
+       "assignments": [],
+       "notebooks": []
+     })
+     ```
+
+4. **Aggregation Example**:
+   - Show how to aggregate grades by course or by semester.
+   - Example:
+     ```javascript
+     db.marks.aggregate([
+       { $match: { "studentId": "001" } },
+       { $unwind: "$semesterA" },
+       { $group: { "_id": "$semesterA.courseId", "averageGrade": { $avg: "$semesterA.grade" } } }
+     ])
+     ```
+
+5. **Data Retrieval Examples**:
+   - Provide examples of how to retrieve specific students, professors, courses, and assignments using `find()`, `findOne()`, or `aggregate()`.
+   - Example:
+     ```javascript
+     db.students.find({ "firstName": "John", "lastName": "Doe" })
+     ```
+
+### Dummy Data
+
+Here’s some dummy data to populate your database for testing:
+
+```javascript
+// Students Collection
+db.students.insertMany([
+  {
+    "_id": "001",
+    "firstName": "John",
+    "lastName": "Doe",
+    "address": { "city": "Tel Aviv", "street": "Herzl", "number": "23" },
+    "phone": "0501234567",
+    "dateOfBirth": ISODate("2000-01-01T00:00:00Z"),
+    "enrollmentDate": ISODate("2018-09-01T00:00:00Z"),
+    "email": "johndoe@example.com",
+    "profileImage": "profile.jpg",
+    "assignments": [
+      {
+        "assignmentId": "A001",
+        "uploadedFile": "assignment1.docx",
+        "date": ISODate("2023-01-15T00:00:00Z"),
+        "grade": 90
+      }
+    ],
+    "notebooks": [
+      {
+        "id": "N001",
+        "course": "Mathematics",
+        "lastUpdate": ISODate("2023-01-20T00:00:00Z"),
+        "fileURL": "notebook1.pdf"
+      }
+    ]
+  },
+  {
+    "_id": "002",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "address": { "city": "Jerusalem", "street": "Ben Yehuda", "number": "12" },
+    "phone": "0507654321",
+    "dateOfBirth": ISODate("1999-05-12T00:00:00Z"),
+    "enrollmentDate": ISODate("2017-09-01T00:00:00Z"),
+    "email": "janesmith@example.com",
+    "profileImage": "profile2.jpg",
+    "assignments": [],
+    "notebooks": []
+  }
+]);
+
+Use of IDs:
+
+Ensure that every entity has a unique identifier (Id),
+which is good practice in MongoDB. MongoDB automatically
+generates _id, but using your own Id can be helpful for 
+clarity or external integrations.
+
+// Professors Collection
+db.professors.insertMany([
+  {
+    "_id": "001",
+    "firstName": "Dr. Alan",
+    "lastName": "Turing",
+    "address": { "city": "Haifa", "street": "Einstein", "number": "7" },
+    "phone": "0529876543",
+    "dateOfBirth": ISODate("1975-06-23T00:00:00Z"),
+    "occupationStart": ISODate("2005-09-01T00:00:00Z"),
+    "educationLevel": "PhD",
+    "email": "aturing@university.com",
+    "profileImage": "alan.jpg",
+    "password": "securepassword",
+    "currentCourses": [
+      { "courseId": "50001", "year": 2023, "semester": "A" }
+    ]
+  }
+]);
+
+// Courses Collection
+db.courses.insertMany([
+  {
+    "_id": "50001",
+    "name": "Mathematics",
+    "points": 3,
+    "field": "Science"
+  },
+  {
+    "_id": "5000002",
+    "name": "Computer Science",
+    "points": 4,
+    "field": "Technology"
+  }
+]);
+
+// Assignments Collection
+db.assignments.insertMany([
+  {
+    "_id": "90000001",
+    "courseId": "C001
+
+",
+    "dueDate": ISODate("2023-01-20T00:00:00Z"),
+    "requirements": "Complete all exercises",
+    "fileURL": "assignment1.pdf",
+    "isListed": true
+  }
+]);
+
+// Marks Collection
+db.marks.insertMany([
+  {
+    "studentId": "001",
+    "semesterA": [
+      { "courseId": "50001", "grade": 90 }
+    ],
+    "semesterB": [
+      { "courseId": "50002", "grade": 85 }
+    ]
+  }
+]);
+```
+
+
+What to do:
+    -insertOne - Done
+    -insertMany - Done
+
+-Updates and Deletions
+    -Dupe collection full or partial by criteria
+    -Delete collection full or partial by criteria
+    -Delete / Update of data directly in document or by using operators
+          -Use:
+            -updateOne
+            -updateMany 
+            -remove
+            -rename 
+            -drop
+
+// everything in updates and deletions is ready
+
+
+-find
+    -query יהיה בהמשך
+    -projection יהיה בהמשך
+    -limit 
+    -skip 
+    -count הצג את כמות התלמידים בקורס - Done
+    -sort 
+    -toArray 
+    -foreach תלמיד במילואים מקבל בונוס 10% על כל ציון
+        
+-Show grouped data with Aggregation
+    -$project:{} 
+    -{$unwind:<>} 
+    -{$match:{}} 
+    -{$group:{},<>}
+    -{$lookup:{}}
+    -{$sort:{}}
+    -{$match:{}} 
+    -{$out:<>}
+ 
+
+ -mapReduce
+    -map: <> 
+    -reduce:<>  
+    -out 
+    -query:<> 
+                                                                    -$set
+                                                                    -$addToSet
+                                                                    -$inc
+                                                                    -$pop
+                                                                    -$push
+                                                                    -$pull
+
+    
